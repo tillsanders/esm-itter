@@ -1,7 +1,7 @@
 {
   "name": "esm-itter",
   "version": "0.2.0",
-  "description": "ESMitter is an event emitter compatible with Node.js and browsers. It is a fork of EventEmitter3, but natively TypeScript, ESM-only and with more modern tooling.",
+  "description": "ESMitter is an event emitter compatible with Node.js and modern browsers. It is a fork of EventEmitter3, but natively TypeScript, ESM-only and with more modern tooling.",
   "type": "module",
   "exports": {
     ".": {
