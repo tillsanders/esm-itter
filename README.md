@@ -1,14 +1,14 @@
-# EventEmitter3
+# ESMitter
 
-[![Version npm](https://img.shields.io/npm/v/eventemitter3.svg?style=flat-square)](https://www.npmjs.com/package/eventemitter3)[![CI](https://img.shields.io/github/actions/workflow/status/primus/eventemitter3/ci.yml?branch=master&label=CI&style=flat-square)](https://github.com/primus/eventemitter3/actions?query=workflow%3ACI+branch%3Amaster)[![Coverage Status](https://img.shields.io/coveralls/primus/eventemitter3/master.svg?style=flat-square)](https://coveralls.io/r/primus/eventemitter3?branch=master)
+ESMitter is an event emitter compatible with Node.js and browsers. It is a fork of
+[EventEmitter3](https://github.com/primus/eventemitter3), but natively TypeScript, ESM-only and with
+more modern tooling. ESMitter is currently in alpha stage. The complete codebase has been converted
+to TypeScript and ESM. ESMitter is currently less performant than EventEmitter3, but still fast.
 
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/eventemitter3.svg)](https://saucelabs.com/u/eventemitter3)
+[![Version npm](https://img.shields.io/npm/v/esm-itter.svg)](https://www.npmjs.com/package/esm-itter)[![CI](https://img.shields.io/github/actions/workflow/status/tillsanders/esm-itter/ci.yml?branch=main&label=CI)](https://github.com/tillsanders/esm-itter/actions?query=workflow%3ACI+branch%3Amain)[![Coverage Status](https://img.shields.io/coveralls/tillsanders/esm-itter/main.svg)](https://coveralls.io/r/tillsanders/esm-itter?branch=main)
 
-EventEmitter3 is a high performance EventEmitter. It has been micro-optimized
-for various of code paths making this, one of, if not the fastest EventEmitter
-available for Node.js and browsers. The module is API compatible with the
-EventEmitter that ships by default with Node.js but there are some slight
-differences:
+The module is API compatible with the EventEmitter that ships by default with Node.js but there are
+some slight differences:
 
 - Domain support has been removed.
 - We do not `throw` an error when you emit an `error` event and nobody is
@@ -21,57 +21,20 @@ differences:
 - The `removeListener` method removes all matching listeners, not only the
   first.
 
-It's a drop in replacement for existing EventEmitters, but just faster. Free
-performance, who wouldn't want that? The EventEmitter is written in EcmaScript 3
-so it will work in the oldest browsers and node versions that you need to
-support.
+It's a drop in replacement for existing EventEmitters, but ESM-only.
 
 ## Installation
 
 ```bash
-$ npm install --save eventemitter3
-```
-
-## CDN
-
-Recommended CDN:
-
-```text
-https://unpkg.com/eventemitter3@latest/dist/eventemitter3.umd.min.js
+$ npm install --save esm-itter
 ```
 
 ## Usage
 
-After installation the only thing you need to do is require the module:
+After installation the only thing you need to do is import the module:
 
 ```js
-var EventEmitter = require('eventemitter3');
-```
-
-And you're ready to create your own EventEmitter instances. For the API
-documentation, please follow the official Node.js documentation:
-
-http://nodejs.org/api/events.html
-
-### Contextual emits
-
-We've upgraded the API of the `EventEmitter.on`, `EventEmitter.once` and
-`EventEmitter.removeListener` to accept an extra argument which is the `context`
-or `this` value that should be set for the emitted events. This means you no
-longer have the overhead of an event that required `fn.bind` in order to get a
-custom `this` value.
-
-```js
-var EE = new EventEmitter()
-  , context = { foo: 'bar' };
-
-function emitted() {
-  console.log(this === context); // true
-}
-
-EE.once('event-name', emitted, context);
-EE.on('another-event', emitted, context);
-EE.removeListener('another-event', emitted, context);
+import { ESMitter } from 'esm-itter'
 ```
 
 ### Tests and benchmarks
@@ -89,6 +52,10 @@ with them you have to clone the GitHub repository.
 Note that you will have to run an additional `npm i` in the benchmarks folder
 before `npm run benchmark`.
 
-## License
+## License & Authors
 
-[MIT](LICENSE)
+This module is licensed under [MIT](LICENSE).
+
+It is a fork of the wonderful [EventEmitter3](https://github.com/primus/eventemitter3) by Arnout
+Kazemier and has been converted to TypeScript and ESM by Till Sanders. For ES3 and CommonJS support,
+as well as superior performance, please use EventEmitter3.

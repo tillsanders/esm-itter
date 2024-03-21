@@ -1,39 +1,35 @@
 {
-  "name": "eventemitter3",
-  "version": "5.0.1",
-  "description": "EventEmitter3 focuses on performance while maintaining a Node.js AND browser compatible interface.",
+  "name": "esm-itter",
+  "version": "0.1.0",
+  "description": "ESMitter is an event emitter compatible with Node.js and browsers. It is a fork of EventEmitter3, but natively TypeScript, ESM-only and with more modern tooling.",
+  "type": "module",
   "exports": {
     ".": {
-      "types": "./index.d.ts",
-      "import": "./index.mjs",
-      "require": "./index.js"
-    },
-    "./package.json": "./package.json"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
   },
-  "main": "index.js",
-  "types": "index.d.ts",
+  "engines": {
+    "node": ">=16"
+  },
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "rollup": "rm -rf dist && rollup -c",
+    "build": "tsc",
     "benchmark": "find benchmarks/run -name '*.js' -exec benchmarks/start.sh {} \\;",
-    "test": "c8 --reporter=lcov --reporter=text mocha test/test.js",
-    "test-esm": "mocha test/test.mjs",
-    "prepublishOnly": "npm run rollup",
-    "test-browser": "node test/browser.js"
+    "test": "vitest run"
   },
   "files": [
-    "index.js",
-    "index.mjs",
-    "index.d.ts",
     "dist"
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/primus/eventemitter3.git"
+    "url": "git://github.com/tillsanders/esm-itter.git"
   },
   "keywords": [
     "EventEmitter",
     "EventEmitter2",
     "EventEmitter3",
+    "ESMitter",
     "Events",
     "addEventListener",
     "addListener",
@@ -47,20 +43,13 @@
     "reactor",
     "subscribe"
   ],
-  "author": "Arnout Kazemier",
+  "author": "Till Sanders",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/primus/eventemitter3/issues"
+    "url": "https://github.com/tillsanders/esm-itter/issues"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^25.0.7",
-    "@rollup/plugin-terser": "^0.4.0",
-    "assume": "^2.2.0",
-    "c8": "^8.0.1",
-    "mocha": "^10.0.0",
-    "pre-commit": "^1.2.0",
-    "rollup": "^4.5.2",
-    "sauce-browsers": "^3.0.0",
-    "sauce-test": "^1.3.3"
+    "typescript": "^5.4.2",
+    "vitest": "^1.4.0"
   }
 }
