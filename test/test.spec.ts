@@ -27,28 +27,21 @@ describe('ESMitter', function tests() {
         foo: ESMitterEvent<[string]>;
       }>();
 
-      let listener1Result = undefined
       e.on('foo', function (bar) {
-        listener1Result = bar;
+        expect(bar).equals('bar');
       })
 
-      let listener2Result = undefined
       e.on('foo', function (bar) {
-        listener2Result = bar;
+        expect(bar).equals('bar');
       })
 
-      let listener3Result = undefined
       e.on('foo', function (bar) {
-        listener3Result = bar;
+        expect(bar).equals('bar');
       })
 
       expect(e.listenerCount('foo')).toBe(3);
 
       e.emit('foo', 'bar');
-
-      expect(listener1Result).equals('bar');
-      expect(listener2Result).equals('bar');
-      expect(listener3Result).equals('bar');
     });
 
     it('can emit the function with multiple arguments, multiple listeners and context', function () {
