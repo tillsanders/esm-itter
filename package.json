@@ -1,6 +1,6 @@
 {
   "name": "esm-itter",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "ESMitter is an event emitter compatible with Node.js and browsers. It is a fork of EventEmitter3, but natively TypeScript, ESM-only and with more modern tooling.",
   "type": "module",
   "exports": {
@@ -16,7 +16,9 @@
   "scripts": {
     "build": "tsc",
     "benchmark": "find benchmarks/run -name '*.js' -exec benchmarks/start.sh {} \\;",
-    "test": "vitest run"
+    "test": "vitest run",
+    "lint": "eslint . --ext .ts",
+    "prettier": "prettier --write ."
   },
   "files": [
     "dist"
@@ -49,6 +51,10 @@
     "url": "https://github.com/tillsanders/esm-itter/issues"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.3.1",
+    "@typescript-eslint/parser": "^7.3.1",
+    "eslint": "^8.57.0",
+    "prettier": "3.2.5",
     "typescript": "^5.4.2",
     "vitest": "^1.4.0"
   },

@@ -34,7 +34,7 @@ $ npm install --save esm-itter
 After installation the only thing you need to do is import the module:
 
 ```js
-import { ESMitter } from 'esm-itter'
+import { ESMitter } from "esm-itter";
 ```
 
 ### Tests and benchmarks

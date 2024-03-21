@@ -9,6 +9,6 @@ export class ESMitterListener {
   constructor(
     public fn: () => unknown,
     public context: unknown,
-    public once = false
+    public once = false,
   ) {}
 }

@@ -2,19 +2,23 @@ import { ESMitterListener } from "./ESMitterListener.js";
 
 export type ESMitterEventName = string | symbol;
 
-export interface ESMitterEvent<EventArguments extends unknown[], EventContext = undefined>{
+export interface ESMitterEvent<
+  EventArguments extends unknown[],
+  EventContext = undefined,
+> {
   arguments: EventArguments;
   fn: (this: EventContext, ...args: EventArguments) => void;
   context: EventContext;
 }
 
 export interface ESMitterEvents {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: ESMitterEventName]: ESMitterEvent<any[], any>;
 }
 
 export class ESMitter<Events extends ESMitterEvents> {
-  private events = {} as Record<keyof Events, ESMitterListener[]>
-  private eventsCount = 0
+  private events = {} as Record<keyof Events, ESMitterListener[]>;
+  private eventsCount = 0;
 
   constructor() {}
 
@@ -27,10 +31,19 @@ export class ESMitter<Events extends ESMitterEvents> {
    * @param {Boolean} once Specify if the listener is a one-time listener.
    * @returns {EventEmitter}
    */
-  public addListener<EventName extends keyof Events>(event: EventName, fn: Events[EventName]["fn"], context?: ESMitterEvents[EventName]["context"], once = false) {
-    const listener = new ESMitterListener(fn as () => unknown, context || this, once)
+  public addListener<EventName extends keyof Events>(
+    event: EventName,
+    fn: Events[EventName]["fn"],
+    context?: ESMitterEvents[EventName]["context"],
+    once = false,
+  ) {
+    const listener = new ESMitterListener(
+      fn as () => unknown,
+      context || this,
+      once,
+    );
     if (this.events[event] === undefined) {
-      this.events[event] = []
+      this.events[event] = [];
       this.eventsCount++;
     }
     this.events[event].push(listener);
@@ -53,10 +66,10 @@ export class ESMitter<Events extends ESMitterEvents> {
    * @returns {Array}
    */
   public eventNames() {
-    const names: (ESMitterEventName)[] = [];
+    const names: ESMitterEventName[] = [];
     if (this.eventsCount === 0) return names;
-    return Object.keys(this.events)
-  };
+    return Object.keys(this.events);
+  }
 
   /**
    * Return the listeners registered for a given event.
@@ -69,7 +82,7 @@ export class ESMitter<Events extends ESMitterEvents> {
 
     if (handlers === undefined) return [];
     return handlers.map((handler) => handler.fn);
-  };
+  }
 
   /**
    * Return the number of listeners listening to a given event.
@@ -82,7 +95,7 @@ export class ESMitter<Events extends ESMitterEvents> {
 
     if (listeners === undefined) return 0;
     return listeners.length;
-  };
+  }
 
   /**
    * Calls each of the listeners registered for a given event.
@@ -90,7 +103,10 @@ export class ESMitter<Events extends ESMitterEvents> {
    * @param {(String|Symbol)} event The event name.
    * @returns {Boolean} `true` if the event had listeners, else `false`.
    */
-  public emit<EventName extends keyof Events>(event: EventName, ...args: Events[EventName]["arguments"]) {
+  public emit<EventName extends keyof Events>(
+    event: EventName,
+    ...args: Events[EventName]["arguments"]
+  ) {
     if (this.events[event] === undefined) return false;
 
     const listeners = [...this.events[event]];
@@ -100,9 +116,9 @@ export class ESMitter<Events extends ESMitterEvents> {
         this.removeListener(event, listener.fn, undefined, true);
       }
       listener.fn.apply(listener.context, args as []);
-    })
+    });
     return true;
-  };
+  }
 
   /**
    * Add a listener for a given event.
@@ -112,9 +128,13 @@ export class ESMitter<Events extends ESMitterEvents> {
    * @param {*} [context=this] The context to invoke the listener with.
    * @returns {EventEmitter} `this`.
    */
-  public on<EventName extends keyof Events>(event: EventName, fn: Events[EventName]["fn"], context?: Events[EventName]["context"]) {
+  public on<EventName extends keyof Events>(
+    event: EventName,
+    fn: Events[EventName]["fn"],
+    context?: Events[EventName]["context"],
+  ) {
     return this.addListener(event, fn, context, false);
-  };
+  }
 
   /**
    * Add a one-time listener for a given event.
@@ -124,9 +144,13 @@ export class ESMitter<Events extends ESMitterEvents> {
    * @param {*} [context=this] The context to invoke the listener with.
    * @returns {EventEmitter} `this`.
    */
-  public once<EventName extends keyof Events>(event: EventName, fn: Events[EventName]["fn"], context?: Events[EventName]["context"]) {
+  public once<EventName extends keyof Events>(
+    event: EventName,
+    fn: Events[EventName]["fn"],
+    context?: Events[EventName]["context"],
+  ) {
     return this.addListener(event, fn, context, true);
-  };
+  }
 
   /**
    * Remove the listeners of a given event.
@@ -137,7 +161,12 @@ export class ESMitter<Events extends ESMitterEvents> {
    * @param {Boolean} once Only remove one-time listeners.
    * @returns {EventEmitter} `this`.
    */
-  public removeListener<EventName extends keyof Events>(event: EventName, fn?: Events[EventName]["fn"], context?: Events[EventName]["context"], once?: boolean) {
+  public removeListener<EventName extends keyof Events>(
+    event: EventName,
+    fn?: Events[EventName]["fn"],
+    context?: Events[EventName]["context"],
+    once?: boolean,
+  ) {
     if (this.events[event] === undefined) return this;
     if (fn === undefined) {
       this.clearEvent(event);
@@ -153,14 +182,14 @@ export class ESMitter<Events extends ESMitterEvents> {
       ) {
         this.events[event].splice(index, 1);
       }
-    })
+    });
 
     if (this.events[event].length === 0) {
       this.clearEvent(event);
     }
 
     return this;
-  };
+  }
 
   /**
    * Remove the listeners of a given event. Alias of removeListener().
@@ -189,4 +218,4 @@ export class ESMitter<Events extends ESMitterEvents> {
 
     return this;
   }
-};
+}
