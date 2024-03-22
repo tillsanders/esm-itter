@@ -1,31 +1,32 @@
-import { defineConfig } from 'vitepress'
+import { defineConfig } from "vitepress";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "ESMitter",
-  description: "ESMitter is a rewrite of the popular EventEmitter3 with a focus on modern tooling, TypeScript, and EcmaScript module syntax.",
+  description:
+    "ESMitter is a rewrite of the popular EventEmitter3 with a focus on modern tooling, TypeScript, and EcmaScript module syntax.",
   base: "/esm-itter/",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
-      { text: 'Home', link: '/' },
-      { text: 'Guide', link: '/guide' },
-      { text: 'API Reference', link: '/api' }
+      { text: "Home", link: "/" },
+      { text: "Guide", link: "/guide" },
+      { text: "API Reference", link: "/api" },
     ],
 
     sidebar: [
       {
-        text: 'Examples',
+        text: "Examples",
         items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' }
-        ]
-      }
+          { text: "Markdown Examples", link: "/markdown-examples" },
+          { text: "Runtime API Examples", link: "/api-examples" },
+        ],
+      },
     ],
 
     socialLinks: [
-      { icon: 'npm', link: 'https://www.npmjs.com/package/esm-itter' },
-      { icon: 'github', link: 'https://github.com/tillsanders/esm-itter' }
-    ]
-  }
-})
+      { icon: "npm", link: "https://www.npmjs.com/package/esm-itter" },
+      { icon: "github", link: "https://github.com/tillsanders/esm-itter" },
+    ],
+  },
+});
