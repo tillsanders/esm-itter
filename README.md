@@ -1,6 +1,6 @@
 # ESMitter
 
-ESMitter *(read: E-S-Emitter; a pun on ESM + emitter)* is an event emitter compatible with Node.js
+ESMitter _(read: E-S-Emitter; a pun on ESM + emitter)_ is an event emitter compatible with Node.js
 and modern browsers. It is a fork of [EventEmitter3](https://github.com/primus/eventemitter3), but
 natively TypeScript, ESM-only and with more modern tooling. ESMitter is currently in alpha stage.
 The complete codebase has been converted to TypeScript and EcmaScript module syntax (ESM). ESMitter

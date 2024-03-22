@@ -49,7 +49,10 @@ import("../../dist/index.js").then((ESMitter) => {
       console.log(e.target.toString());
     })
     .on("complete", function completed() {
-      console.log("Fastest is %s", this.filter("fastest").map("name").join(' & '));
+      console.log(
+        "Fastest is %s",
+        this.filter("fastest").map("name").join(" & "),
+      );
     })
     .run({ async: true });
 });
