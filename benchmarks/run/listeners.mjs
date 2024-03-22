@@ -1,8 +1,8 @@
 "use strict";
 
-import { Suite } from "benchmark";
+import Benchmark from "benchmark";
 
-import { EventEmitter as EventEmitter1 } from "events";
+import EventEmitter1 from "events";
 import EventEmitter3 from "eventemitter3";
 import FE from "fastemitter";
 
@@ -15,7 +15,7 @@ import("../../dist/index.js").then((ESMitter) => {
     if (arguments.length > 100) console.log("damn");
   }
 
-  var ee1 = new EventEmitter1(),
+  var ee1 = new EventEmitter1.EventEmitter(),
     ee3 = new EventEmitter3(),
     master = new Master(),
     fe = new FE();
@@ -37,14 +37,14 @@ import("../../dist/index.js").then((ESMitter) => {
   // event-emitter and contra/emitter do not implement `listeners`.
   //
 
-  new Suite()
+  new Benchmark.Suite()
     .add("EventEmitter1", function () {
       ee1.listeners("event");
     })
-    .add("EventEmitter3@0.1.6", function () {
+    .add("EventEmitter3", function () {
       ee3.listeners("event");
     })
-    .add("ESMitter(main)", function () {
+    .add("ESMitter", function () {
       master.listeners("event");
     })
     .add("fastemitter", function () {
@@ -54,7 +54,7 @@ import("../../dist/index.js").then((ESMitter) => {
       console.log(e.target.toString());
     })
     .on("complete", function completed() {
-      console.log("Fastest is %s", this.filter("fastest").map("name"));
+      console.log("Fastest is %s", this.filter("fastest").map("name").join(' & '));
     })
     .run({ async: true });
 });

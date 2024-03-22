@@ -1,12 +1,12 @@
 "use strict";
 
-import { Suite } from "benchmark";
+import Benchmark from "benchmark";
 
-import { EventEmitter2 } from "eventemitter2";
-import { EventEmitter as EventEmitter1 } from "events";
+import EventEmitter2 from "eventemitter2";
+import EventEmitter1 from "events";
 import EventEmitter3 from "eventemitter3";
-import { EventEmitter as Drip } from "drip";
-import CE from "contra/emitter";
+import Drip from "drip";
+import CE from "contra/emitter.js";
 import EE from "event-emitter";
 import FE from "fastemitter";
 
@@ -19,11 +19,11 @@ import("../../dist/index.js").then((ESMitter) => {
     if (arguments.length > 100) console.log("damn");
   }
 
-  var ee1 = new EventEmitter1(),
-    ee2 = new EventEmitter2(),
+  var ee1 = new EventEmitter1.EventEmitter(),
+    ee2 = new EventEmitter2.EventEmitter2(),
     ee3 = new EventEmitter3(),
     master = new Master(),
-    drip = new Drip(),
+    drip = new Drip.EventEmitter(),
     fe = new FE(),
     ce = CE(),
     ee = EE();
@@ -37,7 +37,7 @@ import("../../dist/index.js").then((ESMitter) => {
   fe.on("foo", handle.bind(ctx));
   ce.on("foo", handle.bind(ctx));
 
-  new Suite()
+  new Benchmark.Suite()
     .add("EventEmitter1", function () {
       ee1.emit("foo");
       ee1.emit("foo", "bar");
@@ -50,13 +50,13 @@ import("../../dist/index.js").then((ESMitter) => {
       ee2.emit("foo", "bar", "baz");
       ee2.emit("foo", "bar", "baz", "boom");
     })
-    .add("EventEmitter3@5.0.1", function () {
+    .add("EventEmitter3", function () {
       ee3.emit("foo");
       ee3.emit("foo", "bar");
       ee3.emit("foo", "bar", "baz");
       ee3.emit("foo", "bar", "baz", "boom");
     })
-    .add("ESMitter(main)", function () {
+    .add("ESMitter", function () {
       master.emit("foo");
       master.emit("foo", "bar");
       master.emit("foo", "bar", "baz");
@@ -90,7 +90,7 @@ import("../../dist/index.js").then((ESMitter) => {
       console.log(e.target.toString());
     })
     .on("complete", function completed() {
-      console.log("Fastest is %s", this.filter("fastest").map("name"));
+      console.log("Fastest is %s", this.filter("fastest").map("name").join(' & '));
     })
     .run({ async: true });
 });

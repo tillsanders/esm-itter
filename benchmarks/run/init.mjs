@@ -1,12 +1,12 @@
 "use strict";
 
-import { Suite } from "benchmark";
+import Benchmark from "benchmark";
 
-import { EventEmitter2 } from "eventemitter2";
-import { EventEmitter as EventEmitter1 } from "events";
+import EventEmitter2 from "eventemitter2";
+import EventEmitter1 from "events";
 import EventEmitter3 from "eventemitter3";
-import { EventEmitter as Drip } from "drip";
-import CE from "contra/emitter";
+import Drip from "drip";
+import CE from "contra/emitter.js";
 import EE from "event-emitter";
 import FE from "fastemitter";
 
@@ -20,21 +20,21 @@ import("../../dist/index.js").then((ESMitter) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let emitter;
 
-  new Suite()
+  new Benchmark.Suite()
     .add("EventEmitter1", function () {
-      emitter = new EventEmitter1();
+      emitter = new EventEmitter1.EventEmitter();
     })
     .add("EventEmitter2", function () {
-      emitter = new EventEmitter2();
+      emitter = new EventEmitter2.EventEmitter2();
     })
-    .add("EventEmitter3@0.1.6", function () {
+    .add("EventEmitter3", function () {
       emitter = new EventEmitter3();
     })
-    .add("ESMitter(main)", function () {
+    .add("ESMitter", function () {
       emitter = new Master();
     })
     .add("Drip", function () {
-      emitter = new Drip();
+      emitter = new Drip.EventEmitter();
     })
     .add("fastemitter", function () {
       emitter = new FE();
@@ -49,7 +49,7 @@ import("../../dist/index.js").then((ESMitter) => {
       console.log(e.target.toString());
     })
     .on("complete", function completed() {
-      console.log("Fastest is %s", this.filter("fastest").map("name"));
+      console.log("Fastest is %s", this.filter("fastest").map("name").join(' & '));
     })
     .run({ async: true });
 });

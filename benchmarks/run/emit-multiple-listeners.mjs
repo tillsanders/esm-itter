@@ -1,41 +1,56 @@
 "use strict";
 
-import { Suite } from "benchmark";
+import Benchmark from "benchmark";
 
-import { EventEmitter2 } from "eventemitter2";
-import { EventEmitter as EventEmitter1 } from "events";
+import EventEmitter2 from "eventemitter2";
+import EventEmitter1 from "events";
 import EventEmitter3 from "eventemitter3";
-import { EventEmitter as Drip } from "drip";
-import CE from "contra/emitter";
+import CE from "contra/emitter.js";
 import EE from "event-emitter";
 import FE from "fastemitter";
 
+function foo() {
+  if (arguments.length > 100) console.log("damn");
+
+  return 1;
+}
+
+function bar() {
+  if (arguments.length > 100) console.log("damn");
+
+  return false;
+}
+
+function baz() {
+  if (arguments.length > 100) console.log("damn");
+
+  return true;
+}
+
+var ee1 = new EventEmitter1.EventEmitter(),
+  ee2 = new EventEmitter2.EventEmitter2(),
+  ee3 = new EventEmitter3(),
+  fe = new FE(),
+  ce = CE(),
+  ee = EE();
+
 import("../../dist/index.js").then((ESMitter) => {
-  const Master = ESMitter.ESMitter;
+  const master = new ESMitter.ESMitter();
 
-  function handle() {
-    if (arguments.length > 100) console.log("damn");
-  }
+  ce.on("foo", foo).on("foo", bar).on("foo", baz);
+  ee.on("foo", foo).on("foo", bar).on("foo", baz);
+  fe.on("foo", foo).on("foo", bar).on("foo", baz);
+  ee3.on("foo", foo).on("foo", bar).on("foo", baz);
+  ee2.on("foo", foo).on("foo", bar).on("foo", baz);
+  ee1.on("foo", foo).on("foo", bar).on("foo", baz);
+  master.on("foo", foo).on("foo", bar).on("foo", baz);
 
-  var ee1 = new EventEmitter1(),
-    ee2 = new EventEmitter2(),
-    ee3 = new EventEmitter3(),
-    master = new Master(),
-    drip = new Drip(),
-    fe = new FE(),
-    ce = CE(),
-    ee = EE();
+  //
+  // Drip is omitted as it throws an error.
+  // Ref: https://github.com/qualiancy/drip/pull/4
+  //
 
-  ee.on("foo", handle);
-  fe.on("foo", handle);
-  ee3.on("foo", handle);
-  ee2.on("foo", handle);
-  ee1.on("foo", handle);
-  drip.on("foo", handle);
-  master.on("foo", handle);
-  ce.on("foo", handle);
-
-  new Suite()
+  new Benchmark.Suite()
     .add("EventEmitter1", function () {
       ee1.emit("foo");
       ee1.emit("foo", "bar");
@@ -48,23 +63,17 @@ import("../../dist/index.js").then((ESMitter) => {
       ee2.emit("foo", "bar", "baz");
       ee2.emit("foo", "bar", "baz", "boom");
     })
-    .add("EventEmitter3@5.0.1", function () {
+    .add("EventEmitter3", function () {
       ee3.emit("foo");
       ee3.emit("foo", "bar");
       ee3.emit("foo", "bar", "baz");
       ee3.emit("foo", "bar", "baz", "boom");
     })
-    .add("ESMitter(main)", function () {
+    .add("ESMitter", function () {
       master.emit("foo");
       master.emit("foo", "bar");
       master.emit("foo", "bar", "baz");
       master.emit("foo", "bar", "baz", "boom");
-    })
-    .add("Drip", function () {
-      drip.emit("foo");
-      drip.emit("foo", "bar");
-      drip.emit("foo", "bar", "baz");
-      drip.emit("foo", "bar", "baz", "boom");
     })
     .add("fastemitter", function () {
       fe.emit("foo");
@@ -88,7 +97,7 @@ import("../../dist/index.js").then((ESMitter) => {
       console.log(e.target.toString());
     })
     .on("complete", function completed() {
-      console.log("Fastest is %s", this.filter("fastest").map("name"));
+      console.log("Fastest is %s", this.filter("fastest").map("name").join(' & '));
     })
     .run({ async: true });
 });
