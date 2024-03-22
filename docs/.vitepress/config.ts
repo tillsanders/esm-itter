@@ -4,6 +4,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "ESMitter",
   description: "ESMitter is a rewrite of the popular EventEmitter3 with a focus on modern tooling, TypeScript, and EcmaScript module syntax.",
+  base: "/esm-itter/",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
