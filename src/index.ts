@@ -1,3 +1,7 @@
 export { ESMitter } from "./ESMitter.js";
 export { ESMitterListener } from "./ESMitterListener.js";
-export type { ESMitterEvents, ESMitterEventName } from "./ESMitter.js";
+export type {
+  ESMitterEvent,
+  ESMitterEvents,
+  ESMitterEventName,
+} from "./ESMitter.js";
