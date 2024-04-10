@@ -39,21 +39,23 @@ Listeners can be removed using the `off()`, `removeListener()` and `removeAllLis
 
 ```typescript
 // Remove all listeners for the 'success' event using off()
-instance.off('success')
+instance.off("success");
 
 // Remove all listeners for the 'success' event using removeListener()
-instance.removeListener('success')
+instance.removeListener("success");
 
 // Remove all listeners for the 'success' event using removeAllListeners()
-instance.removeAllListeners('success')
+instance.removeAllListeners("success");
 
 // Remove all listeners for all events (like a reset) using removeAllListeners()
-instance.removeAllListeners()
+instance.removeAllListeners();
 
 // Remove a specific listener using off() and referencing the listener itself
-const listener = ({ foo, bar }) => { /* [...] */ };
-instance.on('success', listener);
-instance.off('success', listener);
+const listener = ({ foo, bar }) => {
+  /* [...] */
+};
+instance.on("success", listener);
+instance.off("success", listener);
 ```
 
 Note that `off()` (like `on()`, respectively) is merely an alias for `removeListener()`.

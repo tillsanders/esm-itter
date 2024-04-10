@@ -27,5 +27,5 @@ ESMitter requires Node > v16 or a browser with EcmaScript modules (ESM) support.
 ESMitter uses named exports. You can import the base class like this:
 
 ```typescript
-import { ESMitter } from 'esm-itter';
+import { ESMitter } from "esm-itter";
 ```

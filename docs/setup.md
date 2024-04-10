@@ -5,7 +5,7 @@ part of your own class. If you're looking for an event system that is standalone
 classes, you might want to look at [Mitt](https://github.com/developit/mitt).
 
 ```typescript
-import { ESMitter } from 'esm-itter';
+import { ESMitter } from "esm-itter";
 
 class MyClass extends ESMitter {}
 ```
@@ -17,8 +17,8 @@ to the ESMitter class:
 import { ESMitter, type ESMitterEvent } from "esm-itter";
 
 class MyClass extends ESMitter<{
-  'success': ESMitterEvent<[{ foo: string, bar: string }]>;
-  'error': ESMitterEvent<[number, string]>;
+  success: ESMitterEvent<[{ foo: string; bar: string }]>;
+  error: ESMitterEvent<[number, string]>;
 }> {}
 ```
 
