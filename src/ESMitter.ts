@@ -208,7 +208,7 @@ export class ESMitter<Events extends ESMitterEvents> {
    * @param {(String|Symbol)} [event] The event name.
    * @returns {EventEmitter} `this`.
    */
-  public removeAllListeners<EventName extends keyof Events>(event: EventName) {
+  public removeAllListeners<EventName extends keyof Events>(event?: EventName) {
     if (event !== undefined) {
       this.clearEvent(event);
     } else {
