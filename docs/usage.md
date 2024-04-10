@@ -1,6 +1,6 @@
 # Usage
 
-In the [Setup](/esm-itter/setup), we've added two events to our class (`MyClass`). We're now ready
+In the [Setup](/setup), we've added two events to our class (`MyClass`). We're now ready
 to attach event listeners and emit events.
 
 ## Adding Listeners
