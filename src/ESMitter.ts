@@ -173,15 +173,14 @@ export class ESMitter<Events extends ESMitterEvents> {
       return this;
     }
 
-    const listeners = [...this.events[event]].reverse();
-    listeners.forEach((listener, index) => {
-      if (
-        (fn !== undefined && listener.fn === fn) ||
-        (once !== undefined && listener.once) ||
-        (context !== undefined && listener.context === context)
-      ) {
-        this.events[event].splice(index, 1);
-      }
+    const listeners = [...this.events[event]];
+
+    this.events[event] = listeners.filter((listener) => {
+      return (
+        (fn !== undefined && listener.fn !== fn) ||
+        (once !== undefined && listener.once !== once) ||
+        (context !== undefined && listener.context !== context)
+      );
     });
 
     if (this.events[event].length === 0) {
