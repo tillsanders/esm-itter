@@ -3,6 +3,7 @@
 /**
  * Benchmark related modules.
  */
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 var benchmark = require("benchmark");
 
 /**
