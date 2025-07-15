@@ -2,9 +2,9 @@
 
 ESMitter _(read: E-S-Emitter; a pun on ESM + emitter)_ is an event emitter compatible with Node.js
 and modern browsers. It is a fork of [EventEmitter3](https://github.com/primus/eventemitter3), but
-natively TypeScript, ESM-only and with more modern tooling. ESMitter is currently in alpha stage.
-The complete codebase has been converted to TypeScript and EcmaScript module syntax (ESM). ESMitter
-is currently less performant than EventEmitter3, but still fast.
+natively TypeScript, ESM-only and with more modern tooling. The complete codebase has been converted
+to TypeScript and EcmaScript module syntax (ESM). ESMitter is currently less performant than
+EventEmitter3, but still fast.
 
 [![Version npm](https://img.shields.io/npm/v/esm-itter.svg)](https://www.npmjs.com/package/esm-itter)[![CI](https://img.shields.io/github/actions/workflow/status/tillsanders/esm-itter/ci.yml?branch=main&label=CI)](https://github.com/tillsanders/esm-itter/actions?query=workflow%3ACI+branch%3Amain)[![Coverage Status](https://img.shields.io/coveralls/tillsanders/esm-itter/main.svg)](https://coveralls.io/r/tillsanders/esm-itter?branch=main)
 
@@ -32,10 +32,16 @@ $ npm install --save esm-itter
 
 ## Usage
 
-After installation the only thing you need to do is import the module:
+After installation the only thing you need to do is import the module and use it as a parent class:
 
 ```js
 import { ESMitter } from "esm-itter";
+
+class MyEmitter extends ESMitter {
+  constructor() {
+    super();
+  }
+}
 ```
 
 ### Tests and benchmarks
@@ -52,6 +58,11 @@ Tests and benchmarks are not included in the npm package. If you want to play
 with them you have to clone the GitHub repository.
 Note that you will have to run an additional `npm i` in the benchmarks folder
 before `npm run benchmark`.
+
+## Known incompatibilities with EventEmitter3
+
+- The `listenerCount()` method requires an event name as the first argument and will thus not
+  return the number of listeners for all events combined.
 
 ## License & Authors
 
