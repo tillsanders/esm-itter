@@ -17,6 +17,7 @@
     "build": "tsc",
     "benchmark": "find benchmarks/run -name '*.js' -exec benchmarks/start.sh {} \\;",
     "test": "vitest run",
+    "coverage": "vitest run --coverage",
     "lint": "eslint . --ext .ts",
     "prettier": "prettier --write .",
     "docs:dev": "vitepress dev docs",

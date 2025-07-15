@@ -49,7 +49,7 @@ class MyEmitter extends ESMitter {
 This module is well tested. You can run:
 
 - `npm test` to run the tests under Node.js.
-- `npm run test-browser` to run the tests in real browsers via Sauce Labs.
+- `npm run coverage` to run the tests and generate a coverage report.
 
 We also have a set of benchmarks to compare EventEmitter3 with some available
 alternatives. To run the benchmarks run `npm run benchmark`.

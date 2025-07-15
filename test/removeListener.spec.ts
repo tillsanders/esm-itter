@@ -114,5 +114,12 @@ describe("ESMitter", function tests() {
       expect(e.removeListener("foo", bar)).equals(e);
       expect(e.listeners("foo")).eql([]);
     });
+
+    it("does nothing when no listeners are registered", function () {
+      const e = new ESMitter();
+
+      expect(e.removeListener("foo")).equals(e);
+      expect(e.listeners("foo")).eql([]);
+    });
   });
 });
