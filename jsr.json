@@ -1,6 +1,18 @@
 {
   "name": "@tillsanders/esm-itter",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
-  "exports": "./src/ESMitter.ts"
+  "exports": "./src/ESMitter.ts",
+  "publish": {
+    "exclude": [
+      ".github",
+      ".vscode",
+      "benchmarks",
+      "test",
+      ".prettierignore",
+      "eslint.config.js",
+      "tsconfig.json",
+      "vitest.config.ts"
+    ]
+  }
 }
