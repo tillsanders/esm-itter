@@ -1,6 +1,6 @@
 {
   "name": "esm-itter",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "ESMitter is a fork of the popular EventEmitter3 with a focus on EcmaScript module syntax, TypeScript and modern tooling.",
   "type": "module",
   "exports": {
