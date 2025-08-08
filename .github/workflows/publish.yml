@@ -22,3 +22,19 @@ jobs:
         with:
           token: ${{ secrets.NPM_TOKEN }}
           access: public
+
+  push-to-jsr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install
+        run: npm ci
+      - name: Test
+        run: npm test
+      - name: Build
+        run: npm run build
+      - name: Publish package
+        run: npx jsr publish
