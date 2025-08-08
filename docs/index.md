@@ -23,13 +23,27 @@ features:
     details: The latest tooling, Unit Tests, Code Coverage, Benchmarks and decent documentation.
 ---
 
-::: warning ALPHA STAGE
-This project is currently under development. Initial tests suggests, that it is working properly and
-because I want to maintain compatibility with EventEmitter3 and the Node EventEmitter API, **no**
-breaking changes are to be expected. However, the unit tests and documentation are unfinished.
+<script setup>
+import { VPTeamMembers } from 'vitepress/theme'
 
-Furthermore,
-[initial performance tests](https://github.com/tillsanders/esm-itter/tree/main/benchmarks) show that
-this implementation does not match the speed delivered by EventEmitter3. While I don't expect to
-surpass EventEmitter3 in performance, I'm hopeful that this can be improved.
+const members = [
+  {
+    avatar: 'https://www.github.com/tillsanders.png',
+    name: 'Till Sanders',
+    title: 'Developer',
+    links: [
+      { icon: 'github', link: 'https://github.com/tillsanders' },
+    ]
+  },
+]
+</script>
+
+::: info v1.0.0
+This library has been tested using unit tests and has achieved excellent code coverage. It is being
+used in production and is considered stable. Contributions are welcome to improve any aspect of the
+library, including performance, documentation, and features.
 :::
+
+## Team
+
+<VPTeamMembers size="small" :members="members" />

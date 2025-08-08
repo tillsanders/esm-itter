@@ -22,6 +22,7 @@ export default defineConfig({
           { text: "Setup", link: "/setup" },
           { text: "Usage", link: "/usage" },
           { text: "Context", link: "/context" },
+          { text: "Compatibility and EventEmitter3", link: "/compatibility" },
         ],
       },
       {

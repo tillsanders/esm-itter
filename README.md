@@ -4,25 +4,9 @@ ESMitter _(read: E-S-Emitter; a pun on ESM + emitter)_ is an event emitter compa
 and modern browsers. It is a fork of [EventEmitter3](https://github.com/primus/eventemitter3), but
 natively TypeScript, ESM-only and with more modern tooling. The complete codebase has been converted
 to TypeScript and EcmaScript module syntax (ESM). ESMitter is currently less performant than
-EventEmitter3, but still fast.
+EventEmitter3, but still **fast with millions of operations per second**.
 
 [![Version npm](https://img.shields.io/npm/v/esm-itter.svg)](https://www.npmjs.com/package/esm-itter)[![CI](https://img.shields.io/github/actions/workflow/status/tillsanders/esm-itter/ci.yml?branch=main&label=CI)](https://github.com/tillsanders/esm-itter/actions?query=workflow%3ACI+branch%3Amain)[![Coverage Status](https://img.shields.io/coveralls/tillsanders/esm-itter/main.svg)](https://coveralls.io/r/tillsanders/esm-itter?branch=main)
-
-The module is API compatible with the EventEmitter that ships by default with Node.js but there are
-some slight differences:
-
-- Domain support has been removed.
-- We do not `throw` an error when you emit an `error` event and nobody is
-  listening.
-- The `newListener` and `removeListener` events have been removed as they
-  are useful only in some uncommon use-cases.
-- The `setMaxListeners`, `getMaxListeners`, `prependListener` and
-  `prependOnceListener` methods are not available.
-- Support for custom context for events so there is no need to use `fn.bind`.
-- The `removeListener` method removes all matching listeners, not only the
-  first.
-
-It's a drop in replacement for existing EventEmitters, but ESM-only.
 
 ## Installation
 
@@ -32,16 +16,22 @@ $ npm install --save esm-itter
 
 ## Usage
 
-After installation the only thing you need to do is import the module and use it as a parent class:
+After installation the only thing you need to do is import the module and use it as a parent class.
+One of the main features of ESMitter (beside being ESM-only) is that it is strongly typed, so
+you will need to provide type definitions for your events. Here is a simple example:
 
-```js
-import { ESMitter } from "esm-itter";
+```typescript{10-17}
+import { ESMitter, type ESMitterEvent } from "esm-itter";
 
-class MyEmitter extends ESMitter {
-  constructor() {
-    super();
-  }
-}
+class MyClass extends ESMitter<{
+  'success': ESMitterEvent<[{ foo: string, bar: string }]>;
+  'error': ESMitterEvent<[number, string]>;
+}> {}
+
+const instance = new MyClass();
+
+// Attach event listener
+instance.on('success', ({ foo, bar }) => { /* [...] */ })
 ```
 
 ### Tests and benchmarks
@@ -63,6 +53,12 @@ before `npm run benchmark`.
 
 - The `listenerCount()` method requires an event name as the first argument and will thus not
   return the number of listeners for all events combined.
+
+## Status
+
+This library has been tested using unit tests and has achieved excellent code coverage. It is being
+used in production and is considered stable. Contributions are welcome to improve any aspect of the
+library, including performance, documentation, and features.
 
 ## License & Authors
 

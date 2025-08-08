@@ -1,7 +1,13 @@
 import { ESMitterListener } from "./ESMitterListener.js";
 
+/**
+ * Represents the name of an event in ESMitter. This can be a string or a symbol.
+ */
 export type ESMitterEventName = string | symbol;
 
+/**
+ * Describes an event, its arguments, and context. To be used when extending the ESMitter class.
+ */
 export interface ESMitterEvent<
   EventArguments extends unknown[],
   EventContext = undefined,
@@ -11,6 +17,10 @@ export interface ESMitterEvent<
   context: EventContext;
 }
 
+/**
+ * Defines a mapping of event names to their corresponding event handler signatures. Used for
+ * type-safe event registration and emission in ESMitter.
+ */
 export interface ESMitterEvents {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: ESMitterEventName]: ESMitterEvent<any[], any>;

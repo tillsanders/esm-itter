@@ -1,10 +1,17 @@
 # addListener()
 
+Attaches a listener function to an event, allowing it to be called when the event is emitted.
+
+## Example
+
 ```typescript
 instance.addListener("foo", () => {
   /* [...] */
 });
 ```
+
+Also read about providing a [context](/context) to control the value of `this` inside the listener
+function.
 
 ## Parameters
 
@@ -14,6 +21,12 @@ instance.addListener("foo", () => {
 | fn        | unknown          |           | The function that will be called then the event is emitted.                   |
 | context   | unknown          | undefined | The [context](/context) to invoke the listener with.                          |
 | once      | boolean          | false     | Specify if the listener is a one-time listener.                               |
+
+## Returns
+
+| Type     | Description                                          |
+| -------- | ---------------------------------------------------- |
+| ESMitter | The ESMitter instance, allowing for method chaining. |
 
 ## on()
 

@@ -15,7 +15,7 @@ class MyClass extends ESMitter<{
   'error': ESMitterEvent<[number, string]>;
 }> {}
 
-const instance = MyClass();
+const instance = new MyClass();
 
 // Attach event listener using on()
 instance.on('success', ({ foo, bar }) => { /* [...] */ })

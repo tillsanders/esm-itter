@@ -20,7 +20,7 @@ pnpm add esm-itter
 
 ## Compatibility
 
-ESMitter requires Node > v16 or a browser with EcmaScript modules (ESM) support.
+ESMitter requires Node > v18 or a browser with EcmaScript modules (ESM) support.
 
 ## Import
 
