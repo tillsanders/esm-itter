@@ -15,8 +15,6 @@ If no context is provided, the ESMitter instance itself is used as the default c
 ## Example
 
 ```typescript
-import { ESMitter, type ESMitterEvent } from "esm-itter";
-
 class MyClass extends ESMitter<{
   success: ESMitterEvent<[{ foo: string; bar: string }]>;
   error: ESMitterEvent<[number, string]>;

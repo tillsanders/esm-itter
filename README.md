@@ -1,20 +1,21 @@
 # ESMitter
 
-ESMitter _(read: E-S-Emitter; a pun on ESM + emitter)_ is an event emitter compatible with Node.js
-and modern browsers. It is a fork of [EventEmitter3](https://github.com/primus/eventemitter3), but
+ESMitter _(read: E-S-Emitter; a pun on ESM + emitter)_ is an event emitter compatible with Node.js,
+Deno and modern browsers. It is a fork of [EventEmitter3](https://github.com/primus/eventemitter3), but
 natively TypeScript, ESM-only and with more modern tooling. The complete codebase has been converted
 to TypeScript and EcmaScript module syntax (ESM). ESMitter is currently less performant than
 EventEmitter3, but still **fast with millions of operations per second**.
 
-[![Version npm](https://img.shields.io/npm/v/esm-itter.svg)](https://www.npmjs.com/package/esm-itter)[![Tests](https://img.shields.io/github/actions/workflow/status/tillsanders/esm-itter/test.yml?branch=main&label=Tests)](https://github.com/tillsanders/esm-itter/actions?query=workflow%3Atest+branch%3Amain)
+[![Version npm](https://img.shields.io/npm/v/esm-itter.svg)](https://www.npmjs.com/package/esm-itter)
+[![Tests](https://img.shields.io/github/actions/workflow/status/tillsanders/esm-itter/test.yml?branch=main&label=Tests)](https://github.com/tillsanders/esm-itter/actions?query=workflow%3Atest+branch%3Amain)
+[![JSR](https://jsr.io/badges/@tillsanders/esm-itter)](https://jsr.io/@tillsanders/esm-itter)
+[![JSR Score](https://jsr.io/badges/@tillsanders/esm-itter/score)](https://jsr.io/@tillsanders/esm-itter)
 
-## Installation
+## Installation and Usage with Node.js
 
 ```bash
-$ npm install --save esm-itter
+npm install --save esm-itter
 ```
-
-## Usage
 
 After installation the only thing you need to do is import the module and use it as a parent class.
 One of the main features of ESMitter (beside being ESM-only) is that it is strongly typed, so
@@ -22,6 +23,32 @@ you will need to provide type definitions for your events. Here is a simple exam
 
 ```typescript
 import { ESMitter, type ESMitterEvent } from "esm-itter";
+
+class MyClass extends ESMitter<{
+  success: ESMitterEvent<[{ foo: string; bar: string }]>;
+  error: ESMitterEvent<[number, string]>;
+}> {}
+
+const instance = new MyClass();
+
+// Attach event listener
+instance.on("success", ({ foo, bar }) => {
+  /* [...] */
+});
+```
+
+## Installation and Usage with Deno + JSR
+
+```bash
+deno add jsr:@tillsanders/esm-itter
+```
+
+After installation the only thing you need to do is import the module and use it as a parent class.
+One of the main features of ESMitter (beside being ESM-only) is that it is strongly typed, so
+you will need to provide type definitions for your events. Here is a simple example:
+
+```typescript
+import { ESMitter, type ESMitterEvent } from "@tillsanders/esm-itter";
 
 class MyClass extends ESMitter<{
   success: ESMitterEvent<[{ foo: string; bar: string }]>;

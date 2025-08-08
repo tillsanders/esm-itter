@@ -8,8 +8,6 @@ to attach event listeners and emit events.
 Listeners can be attached using the `on()`, `once()` and `addListener()` methods:
 
 ```typescript{10-17}
-import { ESMitter, type ESMitterEvent } from "esm-itter";
-
 class MyClass extends ESMitter<{
   'success': ESMitterEvent<[{ foo: string, bar: string }]>;
   'error': ESMitterEvent<[number, string]>;

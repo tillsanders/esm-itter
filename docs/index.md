@@ -4,7 +4,7 @@ layout: home
 
 hero:
   name: "ESMitter"
-  text: "Modern, ESM-only, natively TypeScript event emitter for the browser and Node.js"
+  text: "Modern, ESM-only, natively TypeScript event emitter for the browser, Node.js and Deno."
   tagline: ESMitter is a fork of the popular EventEmitter3 with a focus on EcmaScript module syntax, TypeScript and modern tooling.
   actions:
     - theme: brand

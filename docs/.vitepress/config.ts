@@ -51,6 +51,7 @@ export default defineConfig({
     ],
 
     socialLinks: [
+      { icon: "jsr", link: "https://jsr.io/@tillsanders/esm-itter" },
       { icon: "npm", link: "https://www.npmjs.com/package/esm-itter" },
       { icon: "github", link: "https://github.com/tillsanders/esm-itter" },
     ],

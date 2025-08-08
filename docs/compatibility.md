@@ -37,3 +37,9 @@ unchanged, you will need to provide type definitions for your events.
 The EventEmitter3 library comes with benchmarks that compare its performance with some
 available alternatives. The results can be found here:
 <https://github.com/tillsanders/esm-itter/blob/main/benchmarks/README.md>
+
+## Compatibility with Deno
+
+ESMitter is fully compatible with Deno, as it is written in TypeScript and uses EcmaScript modules.
+It is available via the [jsr.io](https://jsr.io/@tillsanders/esm-itter) registry, allowing you to
+seamlessly import it in your Deno projects.

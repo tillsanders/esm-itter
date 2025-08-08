@@ -1,6 +1,6 @@
 {
   "name": "esm-itter",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "ESMitter is a fork of the popular EventEmitter3 with a focus on EcmaScript module syntax, TypeScript and modern tooling.",
   "type": "module",
   "exports": {
@@ -48,7 +48,9 @@
     "pub/sub",
     "publish",
     "reactor",
-    "subscribe"
+    "subscribe",
+    "deno",
+    "jsr"
   ],
   "author": "Till Sanders",
   "license": "MIT",
