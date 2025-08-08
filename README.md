@@ -6,7 +6,7 @@ natively TypeScript, ESM-only and with more modern tooling. The complete codebas
 to TypeScript and EcmaScript module syntax (ESM). ESMitter is currently less performant than
 EventEmitter3, but still **fast with millions of operations per second**.
 
-[![Version npm](https://img.shields.io/npm/v/esm-itter.svg)](https://www.npmjs.com/package/esm-itter)[![CI](https://img.shields.io/github/actions/workflow/status/tillsanders/esm-itter/ci.yml?branch=main&label=CI)](https://github.com/tillsanders/esm-itter/actions?query=workflow%3ACI+branch%3Amain)[![Coverage Status](https://img.shields.io/coveralls/tillsanders/esm-itter/main.svg)](https://coveralls.io/r/tillsanders/esm-itter?branch=main)
+[![Version npm](https://img.shields.io/npm/v/esm-itter.svg)](https://www.npmjs.com/package/esm-itter)[![Tests](https://img.shields.io/github/actions/workflow/status/tillsanders/esm-itter/test.yml?branch=main&label=Tests)](https://github.com/tillsanders/esm-itter/actions?query=workflow%3Atest+branch%3Amain)
 
 ## Installation
 
