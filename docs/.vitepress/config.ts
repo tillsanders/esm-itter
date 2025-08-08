@@ -22,7 +22,6 @@ export default defineConfig({
           { text: "Setup", link: "/setup" },
           { text: "Usage", link: "/usage" },
           { text: "Context", link: "/context" },
-          { text: "Compatibility and EventEmitter3", link: "/compatibility" },
         ],
       },
       {
@@ -39,6 +38,14 @@ export default defineConfig({
           { text: "once()", link: "/api/once" },
           { text: "removeAllListeners()", link: "/api/removeAllListeners" },
           { text: "removeListener()", link: "/api/removeListener" },
+        ],
+      },
+      {
+        text: "About",
+        items: [
+          { text: "Compatibility and EventEmitter3", link: "/compatibility" },
+          { text: "Development", link: "/development" },
+          { text: "Changelog", link: "/changelog" },
         ],
       },
     ],

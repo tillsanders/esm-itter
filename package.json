@@ -1,6 +1,6 @@
 {
   "name": "esm-itter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "ESMitter is a fork of the popular EventEmitter3 with a focus on EcmaScript module syntax, TypeScript and modern tooling.",
   "type": "module",
   "exports": {
@@ -31,6 +31,7 @@
     "type": "git",
     "url": "git://github.com/tillsanders/esm-itter.git"
   },
+  "homepage": "https://tillsanders.github.io/esm-itter/",
   "keywords": [
     "EventEmitter",
     "EventEmitter2",
