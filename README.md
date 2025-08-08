@@ -24,14 +24,16 @@ you will need to provide type definitions for your events. Here is a simple exam
 import { ESMitter, type ESMitterEvent } from "esm-itter";
 
 class MyClass extends ESMitter<{
-  'success': ESMitterEvent<[{ foo: string, bar: string }]>;
-  'error': ESMitterEvent<[number, string]>;
+  success: ESMitterEvent<[{ foo: string; bar: string }]>;
+  error: ESMitterEvent<[number, string]>;
 }> {}
 
 const instance = new MyClass();
 
 // Attach event listener
-instance.on('success', ({ foo, bar }) => { /* [...] */ })
+instance.on("success", ({ foo, bar }) => {
+  /* [...] */
+});
 ```
 
 ### Tests and benchmarks
