@@ -26,6 +26,32 @@ export interface ESMitterEvents {
   [key: ESMitterEventName]: ESMitterEvent<any[], any>;
 }
 
+/**
+ * Event emitter to be used as a base class for creating event-driven systems. It allows for
+ * registering listeners for events, emitting events, and managing listeners. It is designed
+ * to be type-safe with TypeScript, allowing for specific event types and their corresponding
+ * arguments and contexts. The API is very similar to Node.js's EventEmitter.
+ *
+ * @example
+ * ```typescript
+ * import { ESMitter, type ESMitterEvent } from "esm-itter";
+ *
+ * class MyClass extends ESMitter<{
+ *   success: ESMitterEvent<[{ foo: string; bar: string }]>;
+ *   error: ESMitterEvent<[number, string]>;
+ * }> {}
+ *
+ * const instance = new MyClass();
+ *
+ * // Attach event listener
+ * instance.on("success", ({ foo, bar }) => {
+ *   console.log(`Success with foo: ${foo}, bar: ${bar}`);
+ * });
+ * ```
+ * @see ESMitterEventName for the type of event names.
+ * @see ESMitterEvent for the event type definition.
+ * @see ESMitterEvents for the event mapping interface.
+ */
 export class ESMitter<Events extends ESMitterEvents> {
   private events = {} as Record<keyof Events, ESMitterListener[]>;
   private eventsCount = 0;
@@ -40,6 +66,12 @@ export class ESMitter<Events extends ESMitterEvents> {
    * @param {*} context The context to invoke the listener with.
    * @param {Boolean} once Specify if the listener is a one-time listener.
    * @returns {EventEmitter}
+   * @example
+   * ```typescript
+   * instance.addListener("foo", () => {
+   *   console.log("Foo event triggered");
+   * });
+   * ```
    */
   public addListener<EventName extends keyof Events>(
     event: EventName,
@@ -64,6 +96,7 @@ export class ESMitter<Events extends ESMitterEvents> {
    * Clear event by name.
    *
    * @param {(String|Symbol)} event The Event name.
+   * @private
    */
   private clearEvent<EventName extends keyof Events>(event: EventName) {
     delete this.events[event];
@@ -74,6 +107,11 @@ export class ESMitter<Events extends ESMitterEvents> {
    * listeners.
    *
    * @returns {Array}
+   * @example
+   * ```typescript
+   * const eventNames = instance.eventNames();
+   * console.log(eventNames); // ['foo', 'bar']
+   * ```
    */
   public eventNames(): ESMitterEventName[] {
     const names: ESMitterEventName[] = [];
@@ -86,6 +124,11 @@ export class ESMitter<Events extends ESMitterEvents> {
    *
    * @param {(String|Symbol)} event The event name.
    * @returns {Array} The registered listeners.
+   * @example
+   * ```typescript
+   * const listeners = instance.listeners("foo");
+   * console.log(listeners); // [Function, Function]
+   * ```
    */
   public listeners<EventName extends keyof Events>(
     event: EventName,
@@ -101,6 +144,11 @@ export class ESMitter<Events extends ESMitterEvents> {
    *
    * @param {(String|Symbol)} event The event name.
    * @returns {Number} The number of listeners.
+   * @example
+   * ```typescript
+   * const count = instance.listenerCount("foo");
+   * console.log(count); // 2
+   * ```
    */
   public listenerCount<EventName extends keyof Events>(
     event: EventName,
@@ -116,6 +164,11 @@ export class ESMitter<Events extends ESMitterEvents> {
    *
    * @param {(String|Symbol)} event The event name.
    * @returns {Boolean} `true` if the event had listeners, else `false`.
+   * @example
+   * ```typescript
+   * const emitted = instance.emit("foo", "arg1", "arg2");
+   * console.log(emitted); // true
+   * ```
    */
   public emit<EventName extends keyof Events>(
     event: EventName,
@@ -141,6 +194,12 @@ export class ESMitter<Events extends ESMitterEvents> {
    * @param {Function} fn The listener function.
    * @param {*} [context=this] The context to invoke the listener with.
    * @returns {EventEmitter} `this`.
+   * @example
+   * ```typescript
+   * instance.on("foo", () => {
+   *   console.log("Foo event triggered");
+   * });
+   * ```
    */
   public on<EventName extends keyof Events>(
     event: EventName,
@@ -157,6 +216,12 @@ export class ESMitter<Events extends ESMitterEvents> {
    * @param {Function} fn The listener function.
    * @param {*} [context=this] The context to invoke the listener with.
    * @returns {EventEmitter} `this`.
+   * @example
+   * ```typescript
+   * instance.once("foo", () => {
+   *   console.log("Foo event triggered");
+   * });
+   * ```
    */
   public once<EventName extends keyof Events>(
     event: EventName,
@@ -174,6 +239,13 @@ export class ESMitter<Events extends ESMitterEvents> {
    * @param {*} context Only remove the listeners that have this context.
    * @param {Boolean} once Only remove one-time listeners.
    * @returns {EventEmitter} `this`.
+   * @example
+   * ```typescript
+   * instance.removeListener("foo", fn);
+   * instance.removeListener("foo", fn, context);
+   * instance.removeListener("foo", fn, context, true); // Remove one-time listeners
+   * instance.removeListener("foo"); // Remove all listeners for "foo"
+   * ```
    */
   public removeListener<EventName extends keyof Events>(
     event: EventName,
@@ -220,6 +292,11 @@ export class ESMitter<Events extends ESMitterEvents> {
    *
    * @param {(String|Symbol)} [event] The event name.
    * @returns {EventEmitter} `this`.
+   * @example
+   * ```typescript
+   * instance.removeAllListeners(); // Removes all listeners for all events
+   * instance.removeAllListeners("foo"); // Removes all listeners for the event "foo"
+   * ```
    */
   public removeAllListeners<EventName extends keyof Events>(
     event?: EventName,
