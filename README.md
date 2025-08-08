@@ -20,7 +20,7 @@ After installation the only thing you need to do is import the module and use it
 One of the main features of ESMitter (beside being ESM-only) is that it is strongly typed, so
 you will need to provide type definitions for your events. Here is a simple example:
 
-```typescript{10-17}
+```typescript
 import { ESMitter, type ESMitterEvent } from "esm-itter";
 
 class MyClass extends ESMitter<{
