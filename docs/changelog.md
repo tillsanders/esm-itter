@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.2
+
+- Add support for Deno and publish to jsr.io.
+
 ## 1.0.1
 
 - Improve documentation around development and contribution.
