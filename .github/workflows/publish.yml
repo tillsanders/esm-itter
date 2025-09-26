@@ -4,13 +4,12 @@ on:
   release:
     types: [published]
 
-permissions:
-  id-token: write  # Required for trusted publishing with OIDC
-  contents: read
-
 jobs:
   push-to-npm-registry:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # Required for trusted publishing with OIDC
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -33,8 +32,8 @@ jobs:
   push-to-jsr:
     runs-on: ubuntu-latest
     permissions:
+      id-token: write  # Required for trusted publishing with OIDC
       contents: read
-      id-token: write
     steps:
       - uses: actions/checkout@v4
       - name: Install
