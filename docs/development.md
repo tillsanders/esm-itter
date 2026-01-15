@@ -64,9 +64,9 @@ documentation.
 ## Publishing
 
 ESMitter is published to to npm using GitHub Actions. To publish a new version, update the
-version in `package.json`, run `npm install` and push the changes to the `main` branch. Create a
-new release on GitHub, and the CI will automatically publish the new version to npm after running
-tests and checks.
+version in `package.json` and `jsr.json`, run `npm install` and push the changes to the `main`
+branch. Create a new release on GitHub, and the CI will automatically publish the new version to
+npm and jsr after running tests and checks.
 
 ## Contributing
 
