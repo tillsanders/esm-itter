@@ -37,5 +37,17 @@ describe("ESMitter", function tests() {
       e.listeners("foo").length = 0;
       expect(e.listeners("foo")).deep.equals([foo]);
     });
+
+    it("does not cause circular references when stringified", function () {
+      const e = new ESMitter<{
+        foo: ESMitterEvent<[string]>;
+      }>();
+
+      function foo() {}
+
+      e.on("foo", foo, e); // Context is the emitter itself
+
+      expect(() => JSON.stringify(e)).to.not.throw();
+    });
   });
 });

@@ -11,4 +11,17 @@ export class ESMitterListener {
     public context: unknown,
     public once = false,
   ) {}
+
+  /**
+   * Returns a JSON representation of the listener. Implemented to avoid circular
+   * references (end errors) when stringifying a class using ESMitterListener. When a listener is
+   * added with a context that references the emitter itself (fallback), a circular reference is
+   * created that cannot be stringified otherwise.
+   * @returns {object}
+   */
+  toJSON(): { once: boolean } {
+    return {
+      once: this.once,
+    };
+  }
 }
