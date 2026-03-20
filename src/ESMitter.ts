@@ -99,7 +99,11 @@ export class ESMitter<Events extends ESMitterEvents> {
    * @private
    */
   private clearEvent<EventName extends keyof Events>(event: EventName) {
-    delete this.events[event];
+    if (--this.eventsCount === 0) {
+      this.events = {} as Record<keyof Events, ESMitterListener[]>;
+    } else {
+      delete this.events[event];
+    }
   }
 
   /**
@@ -114,8 +118,7 @@ export class ESMitter<Events extends ESMitterEvents> {
    * ```
    */
   public eventNames(): ESMitterEventName[] {
-    const names: ESMitterEventName[] = [];
-    if (this.eventsCount === 0) return names;
+    if (this.eventsCount === 0) return [];
     return Object.keys(this.events);
   }
 
@@ -176,14 +179,28 @@ export class ESMitter<Events extends ESMitterEvents> {
   ): boolean {
     if (this.events[event] === undefined) return false;
 
-    const listeners = [...this.events[event]];
+    const snapshot = [...this.events[event]];
+    let hasOnce = false;
 
-    listeners.forEach((listener) => {
-      if (listener.once) {
-        this.removeListener(event, listener.fn, undefined, true);
+    for (let i = 0; i < snapshot.length; i++) {
+      if (snapshot[i].once) {
+        hasOnce = true;
+        break;
       }
-      listener.fn.apply(listener.context, args as []);
-    });
+    }
+
+    if (hasOnce) {
+      // Remove once-listeners from the live array BEFORE calling any listener,
+      // so recursive emits don't re-trigger them.
+      const remaining = snapshot.filter((l) => !l.once);
+      if (remaining.length === 0) this.clearEvent(event);
+      else this.events[event] = remaining;
+    }
+
+    for (let i = 0; i < snapshot.length; i++) {
+      snapshot[i].fn.apply(snapshot[i].context, args as []);
+    }
+
     return true;
   }
 
@@ -259,9 +276,7 @@ export class ESMitter<Events extends ESMitterEvents> {
       return this;
     }
 
-    const listeners = [...this.events[event]];
-
-    this.events[event] = listeners.filter((listener) => {
+    this.events[event] = this.events[event].filter((listener) => {
       return (
         (fn !== undefined && listener.fn !== fn) ||
         (once !== undefined && listener.once !== once) ||
