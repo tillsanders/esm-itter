@@ -53,7 +53,13 @@ export interface ESMitterEvents {
  * @see ESMitterEvents for the event mapping interface.
  */
 export class ESMitter<Events extends ESMitterEvents> {
-  private events = {} as Record<keyof Events, ESMitterListener[]>;
+  // Events are stored as either a single ESMitterListener (common case) or an
+  // array of ESMitterListener when there are multiple listeners for one event.
+  // This avoids an array allocation for the frequent single-listener pattern.
+  private events = {} as Record<
+    keyof Events,
+    ESMitterListener | ESMitterListener[]
+  >;
   private eventsCount = 0;
 
   constructor() {}
@@ -84,11 +90,15 @@ export class ESMitter<Events extends ESMitterEvents> {
       context || this,
       once,
     );
-    if (this.events[event] === undefined) {
-      this.events[event] = [];
+    const existing = this.events[event];
+    if (existing === undefined) {
+      this.events[event] = listener;
       this.eventsCount++;
+    } else if (existing instanceof ESMitterListener) {
+      this.events[event] = [existing, listener];
+    } else {
+      existing.push(listener);
     }
-    this.events[event].push(listener);
     return this;
   }
 
@@ -100,7 +110,10 @@ export class ESMitter<Events extends ESMitterEvents> {
    */
   private clearEvent<EventName extends keyof Events>(event: EventName) {
     if (--this.eventsCount === 0) {
-      this.events = {} as Record<keyof Events, ESMitterListener[]>;
+      this.events = {} as Record<
+        keyof Events,
+        ESMitterListener | ESMitterListener[]
+      >;
     } else {
       delete this.events[event];
     }
@@ -136,10 +149,10 @@ export class ESMitter<Events extends ESMitterEvents> {
   public listeners<EventName extends keyof Events>(
     event: EventName,
   ): Array<Events[EventName]["fn"]> {
-    const handlers = this.events[event];
-
-    if (handlers === undefined) return [];
-    return handlers.map((handler) => handler.fn);
+    const stored = this.events[event];
+    if (stored === undefined) return [];
+    if (stored instanceof ESMitterListener) return [stored.fn];
+    return stored.map((handler) => handler.fn);
   }
 
   /**
@@ -156,10 +169,34 @@ export class ESMitter<Events extends ESMitterEvents> {
   public listenerCount<EventName extends keyof Events>(
     event: EventName,
   ): number {
-    const listeners = this.events[event];
+    const stored = this.events[event];
+    if (stored === undefined) return 0;
+    if (stored instanceof ESMitterListener) return 1;
+    return stored.length;
+  }
 
-    if (listeners === undefined) return 0;
-    return listeners.length;
+  /**
+   * Invoke a single listener with argument-count-specialized call().
+   * @private
+   */
+  private callListener(listener: ESMitterListener, args: unknown[]): void {
+    const fn = listener.fn as (...a: unknown[]) => unknown;
+    switch (args.length) {
+      case 0:
+        fn.call(listener.context);
+        break;
+      case 1:
+        fn.call(listener.context, args[0]);
+        break;
+      case 2:
+        fn.call(listener.context, args[0], args[1]);
+        break;
+      case 3:
+        fn.call(listener.context, args[0], args[1], args[2]);
+        break;
+      default:
+        fn.apply(listener.context, args as []);
+    }
   }
 
   /**
@@ -177,50 +214,41 @@ export class ESMitter<Events extends ESMitterEvents> {
     event: EventName,
     ...args: Events[EventName]["arguments"]
   ): boolean {
-    // Grab a reference to the current listeners array. This is safe to iterate
-    // even if listeners are added/removed during emission: removeListener and
-    // once-cleanup replace this.events[event] with a new array (via filter),
-    // so our local reference still points at the original, unmodified array.
-    // Pre-snapshot the length so listeners added during emit aren't called.
-    const listeners = this.events[event];
-    if (listeners === undefined) return false;
+    const stored = this.events[event];
+    if (stored === undefined) return false;
+
+    // Single-listener fast path — no arrays, no scanning, no filtering.
+    if (stored instanceof ESMitterListener) {
+      if (stored.once) this.clearEvent(event);
+      this.callListener(stored, args);
+      return true;
+    }
+
+    // Multi-listener path: grab a reference to the current array and snapshot
+    // its length. This is safe to iterate even if listeners are added/removed
+    // during emission: removeListener and once-cleanup replace
+    // this.events[event], so our local reference remains stable.
+    const listeners = stored as ESMitterListener[];
     const len = listeners.length;
 
-    let hasOnce = false;
+    let onceCount = 0;
     for (let i = 0; i < len; i++) {
-      if (listeners[i].once) {
-        hasOnce = true;
-        break;
+      if (listeners[i].once) onceCount++;
+    }
+
+    if (onceCount > 0) {
+      // Remove once-listeners from the live storage BEFORE calling any
+      // listener, so recursive emits don't re-trigger them.
+      if (onceCount === len) {
+        this.clearEvent(event);
+      } else {
+        const remaining = listeners.filter((l) => !l.once);
+        this.events[event] = remaining.length === 1 ? remaining[0] : remaining;
       }
     }
 
-    if (hasOnce) {
-      // Remove once-listeners from the live array BEFORE calling any listener,
-      // so recursive emits don't re-trigger them.
-      const remaining = listeners.filter((l) => !l.once);
-      if (remaining.length === 0) this.clearEvent(event);
-      else this.events[event] = remaining;
-    }
-
     for (let i = 0; i < len; i++) {
-      const listener = listeners[i];
-      const fn = listener.fn as (...a: unknown[]) => unknown;
-      switch (args.length) {
-        case 0:
-          fn.call(listener.context);
-          break;
-        case 1:
-          fn.call(listener.context, args[0]);
-          break;
-        case 2:
-          fn.call(listener.context, args[0], args[1]);
-          break;
-        case 3:
-          fn.call(listener.context, args[0], args[1], args[2]);
-          break;
-        default:
-          fn.apply(listener.context, args as []);
-      }
+      this.callListener(listeners[i], args);
     }
 
     return true;
@@ -292,21 +320,39 @@ export class ESMitter<Events extends ESMitterEvents> {
     context?: Events[EventName]["context"],
     once?: boolean,
   ): ESMitter<Events> {
-    if (this.events[event] === undefined) return this;
+    const stored = this.events[event];
+    if (stored === undefined) return this;
     if (fn === undefined) {
       this.clearEvent(event);
       return this;
     }
 
-    this.events[event] = this.events[event].filter((listener) => {
+    // Single-listener fast path.
+    if (stored instanceof ESMitterListener) {
+      if (
+        stored.fn === fn &&
+        (once === undefined || stored.once === once) &&
+        (context === undefined || stored.context === context)
+      ) {
+        this.clearEvent(event);
+      }
+      return this;
+    }
+
+    // Multi-listener path.
+    const remaining = stored.filter((listener) => {
       if (listener.fn !== fn) return true;
       if (once !== undefined && listener.once !== once) return true;
       if (context !== undefined && listener.context !== context) return true;
       return false;
     });
 
-    if (this.events[event].length === 0) {
+    if (remaining.length === 0) {
       this.clearEvent(event);
+    } else if (remaining.length === 1) {
+      this.events[event] = remaining[0];
+    } else {
+      this.events[event] = remaining;
     }
 
     return this;
@@ -321,7 +367,14 @@ export class ESMitter<Events extends ESMitterEvents> {
    * @param {Boolean} once Only remove one-time listeners.
    * @returns {EventEmitter} `this`.
    */
-  public off = this.removeListener;
+  public off<EventName extends keyof Events>(
+    event: EventName,
+    fn?: Events[EventName]["fn"],
+    context?: Events[EventName]["context"],
+    once?: boolean,
+  ): ESMitter<Events> {
+    return this.removeListener(event, fn, context, once);
+  }
 
   /**
    * Remove all listeners, or those of the specified event.
@@ -340,7 +393,10 @@ export class ESMitter<Events extends ESMitterEvents> {
     if (event !== undefined) {
       this.clearEvent(event);
     } else {
-      this.events = {} as Record<keyof Events, ESMitterListener[]>;
+      this.events = {} as Record<
+        keyof Events,
+        ESMitterListener | ESMitterListener[]
+      >;
       this.eventsCount = 0;
     }
 
