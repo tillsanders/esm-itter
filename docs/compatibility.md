@@ -2,8 +2,8 @@
 
 ESMitter is a fork of the popular [EventEmitter3](https://github.com/primus/eventemitter3), but
 natively TypeScript, ESM-only and with more modern tooling. The complete codebase has been converted
-to TypeScript and EcmaScript module syntax (ESM). ESMitter is currently less performant than
-EventEmitter3, but still **fast with millions of operations per second**.
+to TypeScript and EcmaScript module syntax (ESM). ESMitter is very performant with **millions of
+operations per second**.
 
 ## Compatibility with Node.js' EventEmitter
 
@@ -26,12 +26,6 @@ some slight differences:
 ESMitter is designed to be a drop-in replacement for EventEmitter3, maintaining compatibility with
 its API. Unlike EventEmitter3, ESMitter is strongly typed, so while your function calls can remain
 unchanged, you will need to provide type definitions for your events.
-
-### Benchmarks
-
-The EventEmitter3 library comes with benchmarks that compare its performance with some
-available alternatives. The results can be found here:
-<https://github.com/tillsanders/esm-itter/blob/main/benchmarks/README.md>
 
 ## Compatibility with Deno
 

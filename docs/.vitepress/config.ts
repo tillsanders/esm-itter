@@ -44,6 +44,7 @@ export default defineConfig({
         text: "About",
         items: [
           { text: "Compatibility and EventEmitter3", link: "/compatibility" },
+          { text: "Performance", link: "/performance" },
           { text: "Development", link: "/development" },
           { text: "Changelog", link: "/changelog" },
         ],

@@ -16,6 +16,7 @@
   "scripts": {
     "build": "tsc",
     "benchmark": "find benchmarks/run -name '*.js' -exec benchmarks/start.sh {} \\;",
+    "compare": "node --experimental-strip-types --no-warnings benchmarks/compare.ts",
     "test": "vitest run",
     "coverage": "vitest run --coverage",
     "lint": "eslint . --ext .ts",
