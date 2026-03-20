@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.0
+
+No breaking changes. This release includes the following improvements:
+
+- Performance optimizations across the board, with significant improvements in certain scenarios.
+  See the [Performance](./performance.md) page for details.
+- Closing compatibility gap with EventEmitter3: `listenerCount()` now supports the `event` parameter
+- Dependency updates and codebase improvements.
+
 ## 1.0.5
 
 - Prevent circular reference when classes are stringified to JSON. When a listener is added with a

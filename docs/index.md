@@ -38,10 +38,10 @@ const members = [
 ]
 </script>
 
-::: info v1.0.0
+::: info Stable and Production-Ready
 This library has been tested using unit tests and has achieved excellent code coverage. It is being
-used in production and is considered stable. Contributions are welcome to improve any aspect of the
-library, including performance, documentation, and features.
+used in production and is considered stable. With version 1.1.0, ESMitter has been optimized for
+performance. Contributions are welcome to improve any aspect of the library.
 :::
 
 ## Team
