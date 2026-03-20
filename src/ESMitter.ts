@@ -152,7 +152,13 @@ export class ESMitter<Events extends ESMitterEvents> {
     const stored = this.events[event];
     if (stored === undefined) return [];
     if (stored instanceof ESMitterListener) return [stored.fn];
-    return stored.map((handler) => handler.fn);
+
+    const len = stored.length;
+    const result = new Array(len) as Array<Events[EventName]["fn"]>;
+    for (let i = 0; i < len; i++) {
+      result[i] = (stored[i] as ESMitterListener).fn;
+    }
+    return result;
   }
 
   /**
