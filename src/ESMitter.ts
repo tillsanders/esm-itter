@@ -177,13 +177,18 @@ export class ESMitter<Events extends ESMitterEvents> {
     event: EventName,
     ...args: Events[EventName]["arguments"]
   ): boolean {
-    if (this.events[event] === undefined) return false;
+    // Grab a reference to the current listeners array. This is safe to iterate
+    // even if listeners are added/removed during emission: removeListener and
+    // once-cleanup replace this.events[event] with a new array (via filter),
+    // so our local reference still points at the original, unmodified array.
+    // Pre-snapshot the length so listeners added during emit aren't called.
+    const listeners = this.events[event];
+    if (listeners === undefined) return false;
+    const len = listeners.length;
 
-    const snapshot = [...this.events[event]];
     let hasOnce = false;
-
-    for (let i = 0; i < snapshot.length; i++) {
-      if (snapshot[i].once) {
+    for (let i = 0; i < len; i++) {
+      if (listeners[i].once) {
         hasOnce = true;
         break;
       }
@@ -192,13 +197,30 @@ export class ESMitter<Events extends ESMitterEvents> {
     if (hasOnce) {
       // Remove once-listeners from the live array BEFORE calling any listener,
       // so recursive emits don't re-trigger them.
-      const remaining = snapshot.filter((l) => !l.once);
+      const remaining = listeners.filter((l) => !l.once);
       if (remaining.length === 0) this.clearEvent(event);
       else this.events[event] = remaining;
     }
 
-    for (let i = 0; i < snapshot.length; i++) {
-      snapshot[i].fn.apply(snapshot[i].context, args as []);
+    for (let i = 0; i < len; i++) {
+      const listener = listeners[i];
+      const fn = listener.fn as (...a: unknown[]) => unknown;
+      switch (args.length) {
+        case 0:
+          fn.call(listener.context);
+          break;
+        case 1:
+          fn.call(listener.context, args[0]);
+          break;
+        case 2:
+          fn.call(listener.context, args[0], args[1]);
+          break;
+        case 3:
+          fn.call(listener.context, args[0], args[1], args[2]);
+          break;
+        default:
+          fn.apply(listener.context, args as []);
+      }
     }
 
     return true;
@@ -277,11 +299,10 @@ export class ESMitter<Events extends ESMitterEvents> {
     }
 
     this.events[event] = this.events[event].filter((listener) => {
-      return (
-        (fn !== undefined && listener.fn !== fn) ||
-        (once !== undefined && listener.once !== once) ||
-        (context !== undefined && listener.context !== context)
-      );
+      if (listener.fn !== fn) return true;
+      if (once !== undefined && listener.once !== once) return true;
+      if (context !== undefined && listener.context !== context) return true;
+      return false;
     });
 
     if (this.events[event].length === 0) {
