@@ -27,11 +27,6 @@ ESMitter is designed to be a drop-in replacement for EventEmitter3, maintaining 
 its API. Unlike EventEmitter3, ESMitter is strongly typed, so while your function calls can remain
 unchanged, you will need to provide type definitions for your events.
 
-### Known incompatibilities with EventEmitter3
-
-- The `listenerCount()` method requires an event name as the first argument and will thus not
-  return the number of listeners for all events combined.
-
 ### Benchmarks
 
 The EventEmitter3 library comes with benchmarks that compare its performance with some

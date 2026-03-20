@@ -156,23 +156,44 @@ export class ESMitter<Events extends ESMitterEvents> {
   }
 
   /**
-   * Return the number of listeners listening to a given event.
+   * Return the number of listeners listening to a given event, or the total
+   * number of listeners across all events when called without an argument.
    *
-   * @param {(String|Symbol)} event The event name.
+   * @param {(String|Symbol)} [event] The event name. When omitted, returns the
+   *   total listener count across all events.
    * @returns {Number} The number of listeners.
    * @example
    * ```typescript
    * const count = instance.listenerCount("foo");
    * console.log(count); // 2
+   *
+   * const total = instance.listenerCount();
+   * console.log(total); // 5
    * ```
    */
+  public listenerCount(): number;
   public listenerCount<EventName extends keyof Events>(
     event: EventName,
+  ): number;
+  public listenerCount<EventName extends keyof Events>(
+    event?: EventName,
   ): number {
+    if (event === undefined) {
+      let total = 0;
+      for (const key of Object.keys(this.events) as Array<keyof Events>) {
+        const stored = this.events[key];
+        if (stored === undefined) continue;
+        total +=
+          stored instanceof ESMitterListener
+            ? 1
+            : (stored as ESMitterListener[]).length;
+      }
+      return total;
+    }
     const stored = this.events[event];
     if (stored === undefined) return 0;
     if (stored instanceof ESMitterListener) return 1;
-    return stored.length;
+    return (stored as ESMitterListener[]).length;
   }
 
   /**
