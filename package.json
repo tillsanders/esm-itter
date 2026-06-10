@@ -1,6 +1,6 @@
 {
   "name": "esm-itter",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "ESMitter is a fork of the popular EventEmitter3 with a focus on EcmaScript module syntax, TypeScript and modern tooling.",
   "type": "module",
   "exports": {
@@ -59,15 +59,15 @@
     "url": "https://github.com/tillsanders/esm-itter/issues"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.2",
-    "@vitest/coverage-v8": "^4.1.0",
-    "esbuild": "^0.27.4",
-    "eslint": "^9.39.2",
-    "globals": "^17.4.0",
-    "prettier": "3.8.1",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.53.0",
+    "@eslint/js": "^10.0.1",
+    "@vitest/coverage-v8": "^4.1.8",
+    "esbuild": "^0.28.0",
+    "eslint": "^10.4.1",
+    "globals": "^17.6.0",
+    "prettier": "3.8.4",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.61.0",
     "vitepress": "^1.6.4",
-    "vitest": "^4.1.0"
+    "vitest": "^4.1.8"
   }
 }

@@ -1,5 +1,7 @@
 .github
 dist
+docs/.vitepress/cache
+docs/.vitepress/dist
 coverage
 package.json
 package-lock.json
